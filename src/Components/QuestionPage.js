@@ -275,7 +275,7 @@ const QuestionPage = () => {
     <DndProvider backend={isMobile || isTablet ? TouchBackend : HTML5Backend}>
       <div className="header mt-2">
         <h1 className="mt-3 mb-3">
-          Match The Pattern
+          Drag and Match
           <img
             src={"../play.svg"}
             alt="Play audio"
