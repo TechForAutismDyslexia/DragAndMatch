@@ -1,6 +1,6 @@
 {
   "name": "dragandmatch",
-  "homepage": "/game/dragandmatch",
+  "homepage": "/games/dragandmatch",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

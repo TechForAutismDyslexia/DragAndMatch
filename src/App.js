@@ -6,7 +6,7 @@ import "./Components/QuestionPage.css";
 function App() {
   return (
     <div className="App">
-      <Router basename="/game/dragandmatch">
+      <Router basename="/games/dragandmatch">
         <Routes>
           <Route path="/" element={<QuestionPage />}>
           </Route>

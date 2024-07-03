@@ -183,7 +183,7 @@ const QuestionPage = () => {
       {
         gameId: 9,
         tries: tries,
-        timer: timerRef.current/1000,
+        timer: Math.floor(timerRef.current/1000),
         status: true,
       }
     );
@@ -290,6 +290,14 @@ const QuestionPage = () => {
     setGameStarted(false);
   };
 
+  function formatTime(milliseconds) {
+    let totalSeconds = Math.floor(milliseconds / 1000);
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = totalSeconds % 60;
+
+    return `${minutes} minute${minutes !== 1 ? 's' : ''} ${seconds} second${seconds !== 1 ? 's' : ''}`;
+}
+
   return (
     <DndProvider backend={isMobile || isTablet ? TouchBackend : HTML5Backend}>
       <div className="header mt-2">
@@ -338,7 +346,7 @@ const QuestionPage = () => {
         ) : gameOver ? (
           <div className="game-over">
             <h2 className="mt-2 mb-2">Game Over!</h2>
-            <h3 className="mt-3 mb-2">Time taken: {timerRef.current}</h3>
+            <h3 className="mt-3 mb-2">Time taken: {formatTime(timerRef.current)}</h3>
             <h3 className="mt-3 mb-2">Total Tries : {tries}</h3>
             <button onClick={resetGame} className="custombutton mb-4 mt-3">
               Play Again
