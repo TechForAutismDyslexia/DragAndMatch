@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
@@ -174,15 +175,26 @@ const QuestionPage = () => {
   const [submitted, setSubmitted] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const timerRef = useRef(null);
+  const timerRef = useRef();
 
-  
+  const sendGameData = async () => {
+    await axios.post(
+      "https://jwlgamesbackend.vercel.app/api/caretaker/sendgamedata",
+      {
+        gameId: 9,
+        tries: tries,
+        timer: timerRef.current/1000,
+        status: true,
+      }
+    );
+  };
 
   useEffect(() => {
     ["a1", "a2", "a3", "a4", "boat", "boatshadow", "jar"].forEach(
       async (img) =>
-        (images.current[img] = (await import(`../assets/images/${img}.png`)).default)
+        (images.current[img] = (
+          await import(`../assets/images/${img}.png`)
+        ).default)
     );
   }, []);
 
@@ -210,15 +222,14 @@ const QuestionPage = () => {
 
   const handleStartGame = () => {
     setGameStarted(true);
-    const startTime = Date.now();
-    timerRef.current = setInterval(() => {
-      setElapsedTime(Date.now() - startTime);
-    }, 1000);
+    timerRef.current = Date.now();
   };
 
   const handleSubmit = () => {
     setSubmitted(true);
-    const questionImages = data[currentPage].question.map((img) => {return images.current[img]})
+    const questionImages = data[currentPage].question.map((img) => {
+      return images.current[img];
+    });
     const isCorrect =
       JSON.stringify(answerImages) === JSON.stringify(questionImages);
     if (isCorrect) {
@@ -243,6 +254,8 @@ const QuestionPage = () => {
           setShowConfetti(false);
           setBorderClass("");
           setGameOver(true);
+          timerRef.current = Date.now() - timerRef.current
+          sendGameData();
         }, 4000);
       }
     } else {
@@ -265,16 +278,8 @@ const QuestionPage = () => {
     }
   };
 
-  const getTotalTimeTaken = () => {
-    const minutes = Math.floor(elapsedTime / 60000);
-    const seconds = ((elapsedTime % 60000) / 1000).toFixed(0);
-    return `${minutes} ${minutes !== 1 ? "minutes" : "minute"} ${
-      seconds < 10 ? "0" : ""
-    }${seconds} seconds`;
-  };
-
   const resetGame = () => {
-    setCurrentPage(1);
+    setCurrentPage(0);
     setAnswerImages([]);
     setShowConfetti(false);
     setTries(0);
@@ -283,7 +288,6 @@ const QuestionPage = () => {
     setSubmitted(false);
     setGameOver(false);
     setGameStarted(false);
-    setElapsedTime(0);
   };
 
   return (
@@ -334,7 +338,7 @@ const QuestionPage = () => {
         ) : gameOver ? (
           <div className="game-over">
             <h2 className="mt-2 mb-2">Game Over!</h2>
-            <h3 className="mt-3 mb-2">Time taken: {getTotalTimeTaken()}</h3>
+            <h3 className="mt-3 mb-2">Time taken: {timerRef.current}</h3>
             <h3 className="mt-3 mb-2">Total Tries : {tries}</h3>
             <button onClick={resetGame} className="custombutton mb-4 mt-3">
               Play Again
