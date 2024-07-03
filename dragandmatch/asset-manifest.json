@@ -1,0 +1,35 @@
+{
+  "files": {
+    "main.css": "/games/dragandmatch/static/css/main.11fa0a09.css",
+    "main.js": "/games/dragandmatch/static/js/main.32ec3332.js",
+    "static/js/89.32b2a18d.chunk.js": "/games/dragandmatch/static/js/89.32b2a18d.chunk.js",
+    "static/js/122.f1d44675.chunk.js": "/games/dragandmatch/static/js/122.f1d44675.chunk.js",
+    "static/js/947.06ca1e5f.chunk.js": "/games/dragandmatch/static/js/947.06ca1e5f.chunk.js",
+    "static/js/84.457a4c02.chunk.js": "/games/dragandmatch/static/js/84.457a4c02.chunk.js",
+    "static/js/561.1decbfa1.chunk.js": "/games/dragandmatch/static/js/561.1decbfa1.chunk.js",
+    "static/js/513.d9bf2fba.chunk.js": "/games/dragandmatch/static/js/513.d9bf2fba.chunk.js",
+    "static/js/876.a70fc801.chunk.js": "/games/dragandmatch/static/js/876.a70fc801.chunk.js",
+    "static/js/453.7b0462eb.chunk.js": "/games/dragandmatch/static/js/453.7b0462eb.chunk.js",
+    "static/media/HowToPlay.mp3": "/games/dragandmatch/static/media/HowToPlay.1284e51fdc5ce60a6b87.mp3",
+    "static/media/boatshadow.png": "/games/dragandmatch/static/media/boatshadow.6f7d9ac4b5f656a5a775.png",
+    "static/media/boat.png": "/games/dragandmatch/static/media/boat.8fcb8be76babc49c0370.png",
+    "static/media/OpenDyslexic-Bold.otf": "/games/dragandmatch/static/media/OpenDyslexic-Bold.1082cfdbbc04743cc3f1.otf",
+    "static/media/jar.png": "/games/dragandmatch/static/media/jar.adbf8cfc43789ca48ed1.png",
+    "static/media/a1.png": "/games/dragandmatch/static/media/a1.370855e91fb0267f7383.png",
+    "static/media/a2.png": "/games/dragandmatch/static/media/a2.3e916ee3f33db48f06d8.png",
+    "static/media/OopsTryAgain.mp3": "/games/dragandmatch/static/media/OopsTryAgain.e83f5aab53458c02d1b5.mp3",
+    "static/media/PleaseAddTheImages.mp3": "/games/dragandmatch/static/media/PleaseAddTheImages.fd741c7c7eabf9311928.mp3",
+    "static/media/a3.png": "/games/dragandmatch/static/media/a3.23c0e4d51da9ac4f199f.png",
+    "static/media/a4.png": "/games/dragandmatch/static/media/a4.bf7385f3e1cb54380a66.png",
+    "static/media/Correct.mp3": "/games/dragandmatch/static/media/Correct.a11d84c9d7b5cddb603c.mp3",
+    "static/media/playaudio.svg": "/games/dragandmatch/static/media/playaudio.fe437e7b5563a3a2599987e96062bc6b.svg",
+    "index.html": "/games/dragandmatch/index.html",
+    "main.11fa0a09.css.map": "/games/dragandmatch/static/css/main.11fa0a09.css.map",
+    "main.32ec3332.js.map": "/games/dragandmatch/static/js/main.32ec3332.js.map",
+    "453.7b0462eb.chunk.js.map": "/games/dragandmatch/static/js/453.7b0462eb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.11fa0a09.css",
+    "static/js/main.32ec3332.js"
+  ]
+}

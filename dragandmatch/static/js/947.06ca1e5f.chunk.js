@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdragandmatch=self.webpackChunkdragandmatch||[]).push([[947],{947:(a,c,e)=>{a.exports=e.p+"static/media/a3.23c0e4d51da9ac4f199f.png"}}]);
