@@ -3,15 +3,17 @@ import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { isMobile, isTablet } from "react-device-detect";
+import { Popover } from "bootstrap";
 import Confetti from "react-confetti";
 import update from "immutability-helper";
 import data from "./data.json";
-import { Popover } from "bootstrap";
-import CorrectAudio from "../Audio/Correct.mp3";
-import OopsTryAgainAudio from "../Audio/OopsTryAgain.mp3";
-import PleaseAddTheImagesAudio from "../Audio/PleaseAddTheImages.mp3";
-import HowToPlayAudio from "../Audio/HowToPlay.mp3";
-import MatchThePatternAudio from "../Audio/MatchThePattern.mp3";
+import CorrectAudio from "../assets/audio/Correct.mp3";
+import OopsTryAgainAudio from "../assets/audio/OopsTryAgain.mp3";
+import PleaseAddTheImagesAudio from "../assets/audio/PleaseAddTheImages.mp3";
+import HowToPlayAudio from "../assets/audio/HowToPlay.mp3";
+// import DragAndMatchAudio from "../assets/audio/DragAndMatch.mp3";
+
+import playaudioimage from "../assets/images/playaudio.svg";
 
 const ItemType = "IMAGE";
 const AnswerType = "ANSWER_IMAGE";
@@ -162,7 +164,8 @@ const DroppableBox = ({
 };
 
 const QuestionPage = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const images = useRef({});
+  const [currentPage, setCurrentPage] = useState(0);
   const [answerImages, setAnswerImages] = useState([]);
   const [showConfetti, setShowConfetti] = useState(false);
   const [tries, setTries] = useState(0);
@@ -173,6 +176,15 @@ const QuestionPage = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const timerRef = useRef(null);
+
+  
+
+  useEffect(() => {
+    ["a1", "a2", "a3", "a4", "boat", "boatshadow", "jar"].forEach(
+      async (img) =>
+        (images.current[img] = (await import(`../assets/images/${img}.png`)).default)
+    );
+  }, []);
 
   const handleAudioClick = (audioFile) => {
     const audio = new Audio(audioFile);
@@ -206,8 +218,9 @@ const QuestionPage = () => {
 
   const handleSubmit = () => {
     setSubmitted(true);
+    const questionImages = data[currentPage].question.map((img) => {return images.current[img]})
     const isCorrect =
-      JSON.stringify(answerImages) === JSON.stringify(questionData.question);
+      JSON.stringify(answerImages) === JSON.stringify(questionImages);
     if (isCorrect) {
       setTries(tries + 1);
       setShowConfetti(true);
@@ -255,7 +268,9 @@ const QuestionPage = () => {
   const getTotalTimeTaken = () => {
     const minutes = Math.floor(elapsedTime / 60000);
     const seconds = ((elapsedTime % 60000) / 1000).toFixed(0);
-    return `${minutes} ${minutes !==1 ? "minutes" : "minute"} ${seconds < 10 ? "0" : ""}${seconds} seconds`;
+    return `${minutes} ${minutes !== 1 ? "minutes" : "minute"} ${
+      seconds < 10 ? "0" : ""
+    }${seconds} seconds`;
   };
 
   const resetGame = () => {
@@ -263,27 +278,27 @@ const QuestionPage = () => {
     setAnswerImages([]);
     setShowConfetti(false);
     setTries(0);
-    setBorderClass("")
+    setBorderClass("");
     setWarning("");
     setSubmitted(false);
     setGameOver(false);
     setGameStarted(false);
     setElapsedTime(0);
-  }
+  };
 
   return (
     <DndProvider backend={isMobile || isTablet ? TouchBackend : HTML5Backend}>
       <div className="header mt-2">
         <h1 className="mt-3 mb-3">
           Drag and Match
-          <img
-            src={"../play.svg"}
+          {/* <img
+            src={playaudioimage}
             alt="Play audio"
             width="24"
             height="24"
             style={{ cursor: "pointer", marginLeft: "10px" }}
-            onClick={() => handleAudioClick(MatchThePatternAudio)}
-          />
+            onClick={() => handleAudioClick(DragAndMatchAudio)}
+          /> */}
         </h1>
         <div>
           <button
@@ -296,7 +311,7 @@ const QuestionPage = () => {
           >
             Game Instructions
             <img
-              src={"../play.svg"}
+              src={playaudioimage}
               alt="Play audio"
               width="24"
               height="24"
@@ -321,10 +336,7 @@ const QuestionPage = () => {
             <h2 className="mt-2 mb-2">Game Over!</h2>
             <h3 className="mt-3 mb-2">Time taken: {getTotalTimeTaken()}</h3>
             <h3 className="mt-3 mb-2">Total Tries : {tries}</h3>
-            <button
-              onClick={resetGame}
-              className="custombutton mb-4 mt-3"
-            >
+            <button onClick={resetGame} className="custombutton mb-4 mt-3">
               Play Again
             </button>
           </div>
@@ -333,17 +345,19 @@ const QuestionPage = () => {
             <div className="mb-4">
               <h3>Question:</h3>
               <div className="d-flex flex-row flex-wrap justify-content-center mb-3">
-                {questionData.question.map((src, index) => (
-                  <img
-                    key={index}
-                    src={src}
-                    draggable={false}
-                    className="img-thumbnail m-1 dragImg"
-                    width="100"
-                    height="100"
-                    alt={`question-${index}`}
-                  />
-                ))}
+                {questionData.question.map((src, index) => {
+                  return (
+                    <img
+                      key={index}
+                      src={images.current[src]}
+                      draggable={false}
+                      className="img-thumbnail m-1 dragImg"
+                      width="100"
+                      height="100"
+                      alt={`question-${index}`}
+                    />
+                  );
+                })}
               </div>
             </div>
 
@@ -381,8 +395,12 @@ const QuestionPage = () => {
 
               <h3>Options:</h3>
               <div className="d-flex flex-row flex-wrap justify-content-center">
-                {questionData.images.map((src, index) => (
-                  <DraggableImage key={index} src={src} index={index} />
+                {Object.keys(images.current).map((src, index) => (
+                  <DraggableImage
+                    key={index}
+                    src={images.current[src]}
+                    index={index}
+                  />
                 ))}
               </div>
             </div>
