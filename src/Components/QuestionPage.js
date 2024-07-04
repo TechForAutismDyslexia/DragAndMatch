@@ -12,6 +12,8 @@ import CorrectAudio from "../assets/audio/Correct.mp3";
 import OopsTryAgainAudio from "../assets/audio/OopsTryAgain.mp3";
 import PleaseAddTheImagesAudio from "../assets/audio/PleaseAddTheImages.mp3";
 import HowToPlayAudio from "../assets/audio/HowToPlay.mp3";
+import gobackimage from "../assets/images/GoBack.png";
+import resetimage from "../assets/images/Reset.png";
 // import DragAndMatchAudio from "../assets/audio/DragAndMatch.mp3";
 
 import playaudioimage from "../assets/images/playaudio.svg";
@@ -183,7 +185,7 @@ const QuestionPage = () => {
       {
         gameId: 9,
         tries: tries,
-        timer: Math.floor(timerRef.current/1000),
+        timer: Math.floor(timerRef.current / 1000),
         status: true,
       }
     );
@@ -254,7 +256,7 @@ const QuestionPage = () => {
           setShowConfetti(false);
           setBorderClass("");
           setGameOver(true);
-          timerRef.current = Date.now() - timerRef.current
+          timerRef.current = Date.now() - timerRef.current;
           sendGameData();
         }, 4000);
       }
@@ -295,23 +297,53 @@ const QuestionPage = () => {
     let minutes = Math.floor(totalSeconds / 60);
     let seconds = totalSeconds % 60;
 
-    return `${minutes} minute${minutes !== 1 ? 's' : ''} ${seconds} second${seconds !== 1 ? 's' : ''}`;
-}
+    return `${minutes} minute${minutes !== 1 ? "s" : ""} ${seconds} second${
+      seconds !== 1 ? "s" : ""
+    }`;
+  }
 
   return (
     <DndProvider backend={isMobile || isTablet ? TouchBackend : HTML5Backend}>
+      <div className="d-flex">
+        <div className="">
+          <img
+            className=" mt-4 ms-4 mb-2 border border-dark border-3 rounded-4 hover-effect"
+            src={gobackimage}
+            alt="Go Back To Home"
+            width="40"
+            height="35"
+            onClick={()=>{window.location.href = "https://joywithlearning.com/games"}}
+          />
+          <p className="ms-4">Go Back</p>
+        </div>
+        <div className="d-flex me-3 flex-column justify-content-center align-items-center ms-auto">
+
+        <img
+          class=" d-flex mt-4 mb-2 border border-dark border-3 rounded-4 hover-effect "
+          src={resetimage}
+          alt="Reset Game"
+          width="40"
+          height="35"
+          onClick={resetGame}
+        />
+        <p>Reset Game</p>
+        </div>
+      </div>
+      <style>
+        {`.hover-effect {
+            cursor: pointer;
+            box-shadow: 0px 0px 0px 0px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .hover-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+        }`}
+      </style>
+
+      <h1 className="mt-3 mb-3 ">Drag and Match</h1>
       <div className="header mt-2">
-        <h1 className="mt-3 mb-3">
-          Drag and Match
-          {/* <img
-            src={playaudioimage}
-            alt="Play audio"
-            width="24"
-            height="24"
-            style={{ cursor: "pointer", marginLeft: "10px" }}
-            onClick={() => handleAudioClick(DragAndMatchAudio)}
-          /> */}
-        </h1>
         <div>
           <button
             tabIndex="0"
@@ -346,7 +378,9 @@ const QuestionPage = () => {
         ) : gameOver ? (
           <div className="game-over">
             <h2 className="mt-2 mb-2">Game Over!</h2>
-            <h3 className="mt-3 mb-2">Time taken: {formatTime(timerRef.current)}</h3>
+            <h3 className="mt-3 mb-2">
+              Time taken: {formatTime(timerRef.current)}
+            </h3>
             <h3 className="mt-3 mb-2">Total Tries : {tries}</h3>
             <button onClick={resetGame} className="custombutton mb-4 mt-3">
               Play Again
