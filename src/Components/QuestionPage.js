@@ -345,9 +345,9 @@ const QuestionPage = () => {
               alt="Go Back To Home"
               width="40"
               height="35"
-              onClick={() => {
-                window.location.href = "https://joywithlearning.com/games";
-              }}
+              // onClick={() => {
+              //   window.location.href = "https://joywithlearning.com/games";
+              // }}
             />
             <p>Go Back</p>
           </div>
@@ -406,9 +406,9 @@ const QuestionPage = () => {
                 />
               </div>
 
-              <div>
-                <h3>Options:</h3>
-                <div className="d-flex flex-row flex-wrap justify-content-center">
+              <div className="d-flex justify-content-center align-items-center">
+                <h3 className="m-4">Options:</h3>
+                <div className="d-flex flex-row flex-wrap justify-content-center m-1">
                   {Object.keys(images.current).map((src, index) => (
                     <DraggableImage
                       key={index}
@@ -418,14 +418,14 @@ const QuestionPage = () => {
                   ))}
                 </div>
                 {!submitted && !gameOver && (
-                  <button onClick={handleSubmit} className="custombutton mt-4">
+                  <button onClick={handleSubmit} className="custombutton m-4">
                     Submit
                   </button>
                 )}
 
                 {submitted && !gameOver && (
                   <p
-                    className={`warning mt-4 ${
+                    className={`warning m-4 ${
                       warning.includes("Correct")
                         ? "btn btn-success"
                         : "btn btn-danger"
