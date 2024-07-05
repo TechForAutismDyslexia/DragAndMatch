@@ -193,7 +193,7 @@ const QuestionPage = () => {
   };
 
   useEffect(() => {
-    ["a1", "a2", "a3", "a4", "boat", "boatshadow", "jar"].forEach(
+    ["a1", "a2", "a3", "a4", "boat", "jar"].forEach(
       async (img) =>
         (images.current[img] = (
           await import(`../assets/images/${img}.png`)
@@ -306,8 +306,8 @@ const QuestionPage = () => {
 
   return (
     <DndProvider backend={isMobile || isTablet ? TouchBackend : HTML5Backend}>
-      <div className="d-flex align-items-start m-5">
-        <div className="left-panel d-flex flex-column align-items-center ms-5">
+      <div className="d-flex align-items-start m-4">
+        <div className="left-panel d-flex flex-column align-items-center ">
           <div className="left-button">
             <div className="position-relative">
               <img
@@ -407,7 +407,7 @@ const QuestionPage = () => {
               </div>
 
               <div className="d-flex justify-content-center align-items-center">
-                <h3 className="m-4">Options:</h3>
+                {/* <h3 className="m-4">Options:</h3> */}
                 <div className="d-flex flex-row flex-wrap justify-content-center m-1">
                   {Object.keys(images.current).map((src, index) => (
                     <DraggableImage
