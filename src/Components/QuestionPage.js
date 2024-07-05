@@ -4,7 +4,8 @@ import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { isMobile, isTablet } from "react-device-detect";
-import { Popover } from "bootstrap";
+// eslint-disable-next-line
+import { Tooltip } from "bootstrap";
 import Confetti from "react-confetti";
 import update from "immutability-helper";
 import data from "./data.json";
@@ -206,15 +207,16 @@ const QuestionPage = () => {
   };
 
   const questionData = data[currentPage];
+  // eslint-disable-next-line
   const gameInstructions =
     "Drag and Drop the images from the options into the answer box in the same order as given in the question (You can also reorder the images in the answer box)";
   useEffect(() => {
-    const popoverTriggerList = document.querySelectorAll(
-      '[data-bs-toggle="popover"]'
+    const tooltipTriggerList = document.querySelectorAll(
+      '[data-bs-toggle="tooltip"]'
     );
     // eslint-disable-next-line
-    const popoverList = [...popoverTriggerList].map(
-      (popoverTriggerEl) => new Popover(popoverTriggerEl)
+    const tooltipList = [...tooltipTriggerList].map(
+      (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl)
     );
   }, []);
 
@@ -304,158 +306,189 @@ const QuestionPage = () => {
 
   return (
     <DndProvider backend={isMobile || isTablet ? TouchBackend : HTML5Backend}>
-      <div className="d-flex">
-        <div className="">
-          <img
-            className=" mt-4 ms-4 mb-2 border border-dark border-3 rounded-4 hover-effect"
-            src={gobackimage}
-            alt="Go Back To Home"
-            width="40"
-            height="35"
-            onClick={()=>{window.location.href = "https://joywithlearning.com/games"}}
-          />
-          <p className="ms-4">Go Back</p>
-        </div>
-        <div className="d-flex me-3 flex-column justify-content-center align-items-center ms-auto">
-
-        <img
-          class=" d-flex mt-4 mb-2 border border-dark border-3 rounded-4 hover-effect "
-          src={resetimage}
-          alt="Reset Game"
-          width="40"
-          height="35"
-          onClick={resetGame}
-        />
-        <p>Reset Game</p>
-        </div>
-      </div>
-      <style>
-        {`.hover-effect {
-            cursor: pointer;
-            box-shadow: 0px 0px 0px 0px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .hover-effect:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
-        }`}
-      </style>
-
-      <h1 className="mt-3 mb-3 ">Drag and Match</h1>
-      <div className="header mt-2">
-        <div>
-          <button
-            tabIndex="0"
-            className="custombutton mt-2 mbm-2"
-            data-bs-toggle="popover"
-            data-bs-trigger="focus"
-            data-bs-title="How to Play?"
-            data-bs-content={gameInstructions}
-          >
-            Game Instructions
-            <img
-              src={playaudioimage}
-              alt="Play audio"
-              width="24"
-              height="24"
-              style={{ cursor: "pointer", marginLeft: "10px" }}
-              onClick={() => handleAudioClick(HowToPlayAudio)}
-            />
-          </button>
-        </div>
-      </div>
-      <div className="container main mt-4">
-        {!gameStarted ? (
-          <div className="start-game">
-            <button
-              onClick={handleStartGame}
-              className="custombutton mb-5 mt-5"
-            >
-              Start Game
-            </button>
-          </div>
-        ) : gameOver ? (
-          <div className="game-over">
-            <h2 className="mt-2 mb-2">Game Over!</h2>
-            <h3 className="mt-3 mb-2">
-              Time taken: {formatTime(timerRef.current)}
-            </h3>
-            <h3 className="mt-3 mb-2">Total Tries : {tries}</h3>
-            <button onClick={resetGame} className="custombutton mb-4 mt-3">
-              Play Again
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="mb-4">
-              <h3>Question:</h3>
-              <div className="d-flex flex-row flex-wrap justify-content-center mb-3">
-                {questionData.question.map((src, index) => {
-                  return (
-                    <img
-                      key={index}
-                      src={images.current[src]}
-                      draggable={false}
-                      className="img-thumbnail m-1 dragImg"
-                      width="100"
-                      height="100"
-                      alt={`question-${index}`}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-
-            <h3>Answer Box:</h3>
-            <div className="mb-4 d-flex justify-content-center align-items-center">
-              <DroppableBox
-                answerImages={answerImages}
-                setAnswerImages={setAnswerImages}
-                maxItems={questionData.question.length}
-                borderClass={borderClass}
+      <div className="d-flex align-items-start m-5">
+        <div className="left-panel d-flex flex-column align-items-center ms-5">
+          <div className="left-button">
+            <div className="position-relative">
+              <img
+                src={playaudioimage}
+                alt="Play audio"
+                width="40"
+                height="35"
+                className="border border-dark border-3 rounded-4 hover-effect"
+                style={{ cursor: "pointer" }}
+                onClick={() => handleAudioClick(HowToPlayAudio)}
+                data-bs-toggle="tooltip" 
+                data-bs-placement="right" 
+                data-bs-custom-class="custom-tooltip"
+                data-bs-title="Drag and Drop the images from the options into the answer box in the same order as given in the question (You can also reorder the images in the answer box)"
               />
             </div>
 
-            <div>
-              {!submitted && !gameOver && (
-                <button
-                  onClick={handleSubmit}
-                  className="custombutton ms-2 mb-4"
-                >
-                  Submit
-                </button>
-              )}
+            <p>Game Instructions</p>
+          </div>
+          <div className="left-button">
+            <img
+              className="border border-dark border-3 rounded-4 hover-effect"
+              src={resetimage}
+              alt="Reset Game"
+              width="40"
+              height="35"
+              onClick={resetGame}
+            />
+            <p>Reset Game</p>
+          </div>
+          <div className="left-button">
+            <img
+              className="border border-dark border-3 rounded-4 hover-effect"
+              src={gobackimage}
+              alt="Go Back To Home"
+              width="40"
+              height="35"
+              onClick={() => {
+                window.location.href = "https://joywithlearning.com/games";
+              }}
+            />
+            <p>Go Back</p>
+          </div>
+        </div>
 
-              {submitted && !gameOver && (
-                <p
-                  className={`warning ${
-                    warning.includes("Correct")
-                      ? "btn btn-success"
-                      : "btn btn-danger"
-                  }`}
-                >
-                  {warning}
-                </p>
-              )}
-
-              <h3>Options:</h3>
-              <div className="d-flex flex-row flex-wrap justify-content-center">
-                {Object.keys(images.current).map((src, index) => (
-                  <DraggableImage
-                    key={index}
-                    src={images.current[src]}
-                    index={index}
-                  />
-                ))}
-              </div>
+        <div className="container main">
+          {!gameStarted ? (
+            <div className="start-game">
+              <h1 className="mt-3 ">Drag and Match</h1>
+              <button
+                onClick={handleStartGame}
+                className="custombutton mb-3 mt-3"
+              >
+                Start Game
+              </button>
             </div>
+          ) : gameOver ? (
+            <div className="game-over">
+              <h2 className="mt-2 mb-2">Game Over!</h2>
+              <h3 className="mt-3 mb-2">
+                Time taken: {formatTime(timerRef.current)}
+              </h3>
+              <h3 className="mt-3 mb-2">Total Tries : {tries}</h3>
+              <button onClick={resetGame} className="custombutton mb-4 mt-3">
+                Play Again
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="mb-4">
+                <h3>Question:</h3>
+                <div className="d-flex flex-row flex-wrap justify-content-center mb-3">
+                  {questionData.question.map((src, index) => {
+                    return (
+                      <img
+                        key={index}
+                        src={images.current[src]}
+                        draggable={false}
+                        className="img-thumbnail m-1 dragImg"
+                        width="100"
+                        height="100"
+                        alt={`question-${index}`}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
 
-            {showConfetti && <Confetti />}
-            <br />
-          </>
-        )}
+              <h3>Answer Box:</h3>
+              <div className="mb-4 d-flex justify-content-center align-items-center">
+                <DroppableBox
+                  answerImages={answerImages}
+                  setAnswerImages={setAnswerImages}
+                  maxItems={questionData.question.length}
+                  borderClass={borderClass}
+                />
+              </div>
+
+              <div>
+                <h3>Options:</h3>
+                <div className="d-flex flex-row flex-wrap justify-content-center">
+                  {Object.keys(images.current).map((src, index) => (
+                    <DraggableImage
+                      key={index}
+                      src={images.current[src]}
+                      index={index}
+                    />
+                  ))}
+                </div>
+                {!submitted && !gameOver && (
+                  <button onClick={handleSubmit} className="custombutton mt-4">
+                    Submit
+                  </button>
+                )}
+
+                {submitted && !gameOver && (
+                  <p
+                    className={`warning mt-4 ${
+                      warning.includes("Correct")
+                        ? "btn btn-success"
+                        : "btn btn-danger"
+                    }`}
+                  >
+                    {warning}
+                  </p>
+                )}
+              </div>
+
+              {showConfetti && <Confetti />}
+              <br />
+            </>
+          )}
+        </div>
       </div>
+
+      <style>
+        {`.hover-effect {
+              cursor: pointer;
+              box-shadow: 0px 0px 0px 0px;
+              transition: transform 0.3s, box-shadow 0.3s;
+          }
+    
+          .hover-effect:hover {
+              transform: translateY(-5px);
+              box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+          }
+    
+          .main-container {
+            display: flex;
+          }
+    
+          .left-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 20px;
+          }
+    
+          .left-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+          }
+    
+          .container.main {
+            flex-grow: 1;
+          }
+            .custom-tooltip .tooltip-inner {
+            background-color: black; /* Background color of tooltip */
+            color: white; /* Text color of tooltip */
+            border-radius: 5px; /* Rounded corners of tooltip */
+            padding: 10px; /* Padding of tooltip */
+            
+            
+        }
+
+       
+          
+          `}
+      </style>
     </DndProvider>
   );
 };
