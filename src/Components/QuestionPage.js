@@ -181,15 +181,29 @@ const QuestionPage = () => {
   const timerRef = useRef();
 
   const sendGameData = async () => {
-    await axios.post(
-      "https://jwlgamesbackend.vercel.app/api/caretaker/sendgamedata",
-      {
-        gameId: 9,
-        tries: tries,
-        timer: Math.floor(timerRef.current / 1000),
-        status: true,
-      }
-    );
+    try {
+      const gameId = localStorage.getItem('gameId');
+      const childId = localStorage.getItem('childId');
+      const logintoken = localStorage.getItem('logintoken');
+      const timer = localStorage.getItem('timer')
+      const tri = localStorage.getItem('tries')
+    
+      await axios.put(
+        `https://jwlgamesbackend.vercel.app/api/caretaker/${gameId}/${childId}`, 
+        {
+          tries: tri,
+          timer: timer,
+          status: true,
+        },
+        {
+          headers: {
+            "Authorization": logintoken
+          }
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -254,6 +268,8 @@ const QuestionPage = () => {
         }, 4000);
       } else {
         setTimeout(() => {
+          localStorage.setItem("tries", tries);
+          localStorage.setItem("timer", Math.floor(timerRef.current / 1000));
           clearInterval(timerRef.current);
           setShowConfetti(false);
           setBorderClass("");
