@@ -15,8 +15,6 @@ import PleaseAddTheImagesAudio from "../assets/audio/PleaseAddTheImages.mp3";
 import HowToPlayAudio from "../assets/audio/HowToPlay.mp3";
 import gobackimage from "../assets/images/GoBack.png";
 import resetimage from "../assets/images/Reset.png";
-// import DragAndMatchAudio from "../assets/audio/DragAndMatch.mp3";
-
 import playaudioimage from "../assets/images/playaudio.svg";
 
 const ItemType = "IMAGE";
@@ -182,14 +180,14 @@ const QuestionPage = () => {
 
   const sendGameData = async () => {
     try {
-      const gameId = localStorage.getItem('gameId');
-      const childId = localStorage.getItem('childId');
-      const logintoken = localStorage.getItem('logintoken');
-      const timer = localStorage.getItem('timer')
-      const tri = localStorage.getItem('tries')
-    
+      const gameId = localStorage.getItem("gameId");
+      const childId = localStorage.getItem("childId");
+      const logintoken = localStorage.getItem("logintoken");
+      const timer = localStorage.getItem("timer");
+      const tri = localStorage.getItem("tries");
+
       await axios.put(
-        `https://jwlgamesbackend.vercel.app/api/caretaker/${gameId}/${childId}`, 
+        `https://jwlgamesbackend.vercel.app/api/caretaker/${gameId}/${childId}`,
         {
           tries: tri,
           timer: timer,
@@ -197,8 +195,8 @@ const QuestionPage = () => {
         },
         {
           headers: {
-            "Authorization": logintoken
-          }
+            Authorization: logintoken,
+          },
         }
       );
     } catch (err) {
@@ -310,6 +308,10 @@ const QuestionPage = () => {
     setGameStarted(false);
   };
 
+  const handleBackClick = ()=>{
+    window.location.href = window.location.origin + '/adminportal/games'
+  }
+
   function formatTime(milliseconds) {
     let totalSeconds = Math.floor(milliseconds / 1000);
     let minutes = Math.floor(totalSeconds / 60);
@@ -334,8 +336,8 @@ const QuestionPage = () => {
                 className="border border-dark border-3 rounded-4 hover-effect"
                 style={{ cursor: "pointer" }}
                 onClick={() => handleAudioClick(HowToPlayAudio)}
-                data-bs-toggle="tooltip" 
-                data-bs-placement="right" 
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
                 data-bs-custom-class="custom-tooltip"
                 data-bs-title="Drag and Drop the images from the options into the answer box in the same order as given in the question (You can also reorder the images in the answer box)"
               />
@@ -361,10 +363,9 @@ const QuestionPage = () => {
               alt="Go Back To Home"
               width="40"
               height="35"
-              // onClick={() => {
-              //   window.location.href = "https://joywithlearning.com/games";
-              // }}
+              onClick={handleBackClick}
             />
+
             <p>Go Back</p>
           </div>
         </div>
