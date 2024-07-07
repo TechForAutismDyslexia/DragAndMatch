@@ -266,13 +266,13 @@ const QuestionPage = () => {
         }, 4000);
       } else {
         setTimeout(() => {
-          localStorage.setItem("tries", tries);
-          localStorage.setItem("timer", Math.floor(timerRef.current / 1000));
           clearInterval(timerRef.current);
           setShowConfetti(false);
           setBorderClass("");
           setGameOver(true);
           timerRef.current = Date.now() - timerRef.current;
+          localStorage.setItem("tries", tries);
+          localStorage.setItem("timer", Math.floor(timerRef.current/1000));
           sendGameData();
         }, 4000);
       }
