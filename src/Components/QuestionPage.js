@@ -188,6 +188,7 @@ const QuestionPage = () => {
 
       await axios.put(
         `https://jwlgamesbackend.vercel.app/api/caretaker/${gameId}/${childId}`,
+        
         {
           tries: tri,
           timer: timer,
