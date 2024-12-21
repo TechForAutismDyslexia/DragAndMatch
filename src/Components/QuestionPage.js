@@ -209,7 +209,7 @@ const QuestionPage = () => {
   useEffect(() => {
     const fetchAndImportImages = async (setNo) => {
       const gamedatares = await axios.get(
-        `https://api.joywithlearning.com/api/games/dragandmatch/${setNo}`
+        `https://api.joywithlearning.com/api/dragandmatch/${setNo}`
       );
       setQuestionSet(gamedatares.data);
       ["a1", "a2", "a3", "a4", "boat", "jar"].forEach(

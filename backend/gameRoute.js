@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const dragandmatch = require("../models/dragandmatchSchema");
-router.get("/dragandmatch/:setNo", async (req, res) => {
+router.get("/:setNo", async (req, res) => {
   console.log("dragandmatch");
   try {
     const questions = await dragandmatch.findOne({ setNo: req.params.setNo });
