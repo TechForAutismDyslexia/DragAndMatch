@@ -8,7 +8,7 @@ import { isMobile, isTablet } from "react-device-detect";
 import { Tooltip } from "bootstrap";
 import Confetti from "react-confetti";
 import update from "immutability-helper";
-import data from "./data.json";
+// import data from "./data.json";
 import CorrectAudio from "../assets/audio/Correct.mp3";
 import OopsTryAgainAudio from "../assets/audio/OopsTryAgain.mp3";
 import PleaseAddTheImagesAudio from "../assets/audio/PleaseAddTheImages.mp3";
@@ -177,6 +177,7 @@ const QuestionPage = () => {
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const timerRef = useRef();
+  const [questionSet, setQuestionSet] = useState([]);
 
   const sendGameData = async () => {
     try {
@@ -187,8 +188,8 @@ const QuestionPage = () => {
       const tri = localStorage.getItem("tries");
 
       await axios.put(
-        `https://jwlgamesbackend.vercel.app/api/caretaker/${gameId}/${childId}`,
-        
+        `https://api.joywithlearning.com/api/caretaker/${gameId}/${childId}`,
+
         {
           tries: tri,
           timer: timer,
@@ -206,20 +207,26 @@ const QuestionPage = () => {
   };
 
   useEffect(() => {
-    ["a1", "a2", "a3", "a4", "boat", "jar"].forEach(
-      async (img) =>
-        (images.current[img] = (
-          await import(`../assets/images/${img}.png`)
-        ).default)
-    );
+    const fetchAndImportImages = async (setNo) => {
+      const gamedatares = await axios.get(
+        `https://api.joywithlearning.com/api/games/dragandmatch/${setNo}`
+      );
+      setQuestionSet(gamedatares.data);
+      ["a1", "a2", "a3", "a4", "boat", "jar"].forEach(
+        async (img) =>
+          (images.current[img] = (
+            await import(`../assets/images/${img}.png`)
+          ).default)
+      );
+    };
+    fetchAndImportImages(1);
   }, []);
 
   const handleAudioClick = (audioFile) => {
     const audio = new Audio(audioFile);
     audio.play();
   };
-
-  const questionData = data[currentPage];
+  const questionData = questionSet[currentPage];
   // eslint-disable-next-line
   const gameInstructions =
     "Drag and Drop the images from the options into the answer box in the same order as given in the question (You can also reorder the images in the answer box)";
@@ -244,7 +251,7 @@ const QuestionPage = () => {
 
   const handleSubmit = () => {
     setSubmitted(true);
-    const questionImages = data[currentPage].question.map((img) => {
+    const questionImages = questionSet[currentPage].question.map((img) => {
       return images.current[img];
     });
     const isCorrect =
@@ -257,12 +264,14 @@ const QuestionPage = () => {
       CorrectAud.play();
       setBorderClass("blink-green");
 
-      if (data[currentPage + 1]) {
+      if (questionSet[currentPage + 1]) {
         setTimeout(() => {
           setShowConfetti(false);
           setBorderClass("");
           setSubmitted(false);
+
           setCurrentPage(currentPage + 1);
+
           setAnswerImages([]);
         }, 4000);
       } else {
@@ -273,7 +282,7 @@ const QuestionPage = () => {
           setGameOver(true);
           timerRef.current = Date.now() - timerRef.current;
           localStorage.setItem("tries", tries);
-          localStorage.setItem("timer", Math.floor(timerRef.current/1000));
+          localStorage.setItem("timer", Math.floor(timerRef.current / 1000));
           sendGameData();
         }, 4000);
       }
@@ -309,9 +318,9 @@ const QuestionPage = () => {
     setGameStarted(false);
   };
 
-  const handleBackClick = ()=>{
-    window.location.href = window.location.origin + '/adminportal/games'
-  }
+  const handleBackClick = () => {
+    window.location.href = window.location.origin + "/adminportal/games";
+  };
 
   function formatTime(milliseconds) {
     let totalSeconds = Math.floor(milliseconds / 1000);
